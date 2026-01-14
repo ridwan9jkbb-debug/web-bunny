@@ -1,130 +1,69 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANOMALY ACCESS</title>
+    <title>Bunny Cloud - Tanpa Batas</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; overflow-x: hidden; }
-        .neon-text { text-shadow: 0 0 10px #00ff41; }
-        .glass { background: rgba(0, 255, 65, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 65, 0.2); }
-        .hidden { display: none; }
-        #loader { position: fixed; inset: 0; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 90%; max-width: 400px; text-align: center; border: 1px solid #334155; }
+        h2 { margin-bottom: 1.5rem; color: #38bdf8; }
+        input[type="file"] { margin-bottom: 1rem; width: 100%; color: #94a3b8; }
+        button { background: #38bdf8; color: #0f172a; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        button:active { transform: scale(0.95); }
+        #result { margin-top: 1rem; word-break: break-all; font-size: 0.8rem; background: #0f172a; padding: 0.5rem; border-radius: 0.3rem; display: none; border: 1px dashed #38bdf8; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="text-[10px]">
-            <p id="L1">> INITIALIZING_SYSTEM...</p>
-            <p id="L2" class="hidden">> READY_TO_ACCESS.</p>
-        </div>
-    </div>
+<div class="card">
+    <h2>Bunny Cloud 🚀</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadKeSupabase()" id="btnUpload">GAS UPLOAD!</button>
+    <div id="result"></div>
+</div>
 
-    <div id="gatekeeper" class="fixed inset-0 z-[90] bg-[#050505] flex items-center justify-center p-6 hidden">
-        <div class="text-center w-full max-w-xs">
-            <h2 class="neon-text mb-4 text-xs font-bold tracking-widest uppercase">Input_Access_Key</h2>
-            <input type="password" id="passkey" placeholder="PASSWORD" class="w-full bg-black border border-[#00ff41] p-3 rounded text-center outline-none text-[#00ff41] text-sm mb-4">
-            <button onclick="checkKey()" class="w-full border border-[#00ff41] py-2 text-[10px] font-bold">VERIFY_KEY</button>
-        </div>
-    </div>
+<script>
+    // GANTI DENGAN DATA KAMU
+    const SB_URL = "URL_SUPABASE_KAMU";
+    const SB_KEY = "ANON_KEY_SUPABASE_KAMU";
+    const BUCKET_NAME = "NAMA_BUCKET_KAMU";
 
-    <div id="mainContent" class="p-6 hidden">
-        <div class="max-w-4xl mx-auto flex justify-between items-center mb-10">
-            <div>
-                <h1 class="text-lg font-bold neon-text">ANOMALY_STORAGE</h1>
-                <p id="userStatus" class="text-[8px] opacity-60">VISITOR_MODE</p>
-            </div>
-            <button id="authBtn" class="glass px-3 py-1 rounded border border-[#00ff41] text-[10px]">LOGIN_ADMIN</button>
-        </div>
+    const supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        <div id="uploadArea" class="max-w-4xl mx-auto mb-8 hidden">
-            <label class="glass block w-full p-6 rounded-xl border-dashed border-2 border-[#00ff41] text-center cursor-pointer">
-                <span class="text-xs font-bold">+ UPLOAD_DATA</span>
-                <input type="file" id="fileInput" class="hidden" accept="image/*,video/*">
-            </label>
-            <p id="uploadStatus" class="text-[10px] mt-2 text-center text-[#00ff41]"></p>
-        </div>
+    async function uploadKeSupabase() {
+        const fileInput = document.getElementById('fileInput');
+        const btn = document.getElementById('btnUpload');
+        const resDiv = document.getElementById('result');
+        const file = fileInput.files[0];
 
-        <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-3" id="galleryGrid"></div>
-    </div>
+        if (!file) return alert("Pilih file dulu, Bunny!");
 
-    <script>
-        const SB_URL = "https://mfajyyepbeemtsejjpew.supabase.co";
-        const SB_KEY = "sb_publishable_IU9WKzMzqtqPjADyeBZrig_d-CJB62g";
-        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+        btn.innerText = "Lagi Terbang...";
+        btn.disabled = true;
 
-        const ADMIN_EMAIL = "ridwan9jkbb@gmail.com";
-        const ACCESS_KEY = "ANOMALY2026";
+        const fileName = `${Date.now()}-${file.name}`;
 
-        window.onload = () => {
-            setTimeout(() => document.getElementById('L2').classList.remove('hidden'), 500);
-            setTimeout(() => {
-                document.getElementById('loader').remove();
-                document.getElementById('gatekeeper').classList.remove('hidden');
-            }, 1000);
-        };
+        const { data, error } = await supabase.storage
+            .from(BUCKET_NAME)
+            .upload(fileName, file);
 
-        function checkKey() {
-            if(document.getElementById('passkey').value === ACCESS_KEY) {
-                document.getElementById('gatekeeper').remove();
-                document.getElementById('mainContent').classList.remove('hidden');
-                loadGallery();
-                checkUserStatus();
-            } else { alert("WRONG KEY"); }
+        if (error) {
+            alert("Gagal Pamer: " + error.message);
+            btn.innerText = "GAS UPLOAD!";
+            btn.disabled = false;
+        } else {
+            const { data: urlData } = supabase.createClient(SB_URL, SB_KEY)
+                .storage.from(BUCKET_NAME).getPublicUrl(fileName);
+            
+            resDiv.style.display = "block";
+            resDiv.innerHTML = `<strong>Link Pamer:</strong><br><a href="${urlData.publicUrl}" target="_blank" style="color:#38bdf8">${urlData.publicUrl}</a>`;
+            btn.innerText = "BERHASIL!";
+            setTimeout(() => { btn.innerText = "GAS UPLOAD!"; btn.disabled = false; }, 3000);
         }
+    }
+</script>
 
-        async function checkUserStatus() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            const authBtn = document.getElementById('authBtn');
-            const uploadArea = document.getElementById('uploadArea');
-
-            if (user && user.email === ADMIN_EMAIL) {
-                document.getElementById('userStatus').innerText = "ADMIN: " + user.email;
-                uploadArea.classList.remove('hidden');
-                authBtn.innerText = "LOGOUT";
-                authBtn.onclick = () => supabaseClient.auth.signOut().then(() => location.reload());
-            } else {
-                authBtn.onclick = async () => {
-                    const email = prompt("Email Admin:");
-                    const password = prompt("Password Admin:");
-                    if(!email || !password) return;
-                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if (error) alert("FAILED: " + error.message);
-                    else location.reload();
-                };
-            }
-        }
-
-        async function loadGallery() {
-            const { data } = await supabaseClient.storage.from('anomaly').list();
-            const grid = document.getElementById('galleryGrid');
-            if (data) {
-                data.forEach(file => {
-                    if(file.name === '.emptyFolderPlaceholder') return;
-                    const url = `${SB_URL}/storage/v1/object/public/anomaly/${file.name}`;
-                    const div = document.createElement('div');
-                    div.className = "glass rounded-lg aspect-square overflow-hidden";
-                    if (file.name.match(/\.(mp4|webm|mov)$/i)) {
-                        div.innerHTML = `<video src="${url}" class="w-full h-full object-cover" controls></video>`;
-                    } else {
-                        div.innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
-                    }
-                    grid.appendChild(div);
-                });
-            }
-        }
-
-        document.getElementById('fileInput').onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            document.getElementById('uploadStatus').innerText = "UPLOADING...";
-            await supabaseClient.storage.from('anomaly').upload(`${Date.now()}_${file.name}`, file);
-            location.reload();
-        };
-    </script>
 </body>
 </html>
