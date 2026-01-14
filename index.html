@@ -12,30 +12,23 @@
         .neon-text { text-shadow: 0 0 10px #00ff41; }
         .glass { background: rgba(0, 255, 65, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 65, 0.2); }
         .hidden { display: none; }
-        
-        /* Animasi Terminal */
         #loader { position: fixed; inset: 0; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; transition: opacity 0.8s; }
-        .cursor { display: inline-block; width: 8px; height: 15px; background: #00ff41; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="text-[10px] sm:text-xs">
-            <p id="L1">> BOOTING_ANOMALY_OS...</p>
-            <p id="L2" class="hidden">> CONNECTING_TO_SUPABASE...</p>
-            <p id="L3" class="hidden">> VERIFYING_RIDWAN_ENCRYPTION...</p>
-            <p id="L4" class="hidden">> SYSTEM_READY. <span class="cursor"></span></p>
+        <div class="text-[10px]">
+            <p id="L1">> INITIALIZING_ANOMALY_OS...</p>
+            <p id="L2" class="hidden">> SYSTEM_READY.</p>
         </div>
     </div>
 
     <div id="gatekeeper" class="fixed inset-0 z-[90] bg-[#050505] flex items-center justify-center p-6 hidden">
         <div class="text-center w-full max-w-xs">
-            <h2 class="neon-text mb-4 text-xs font-bold tracking-widest uppercase">Encrypted_Access_Required</h2>
+            <h2 class="neon-text mb-4 text-xs font-bold tracking-widest uppercase">Input_Access_Key</h2>
             <input type="password" id="passkey" placeholder="PASSWORD" class="w-full bg-black border border-[#00ff41] p-3 rounded text-center outline-none text-[#00ff41] text-sm mb-4">
-            <button onclick="checkKey()" class="w-full border border-[#00ff41] py-2 text-[10px] hover:bg-[#00ff41] hover:text-black transition font-bold">VERIFY_IDENTITY</button>
-            <p id="errorMsg" class="text-red-500 text-[10px] mt-2 hidden">ACCESS_DENIED_INVALID_KEY</p>
+            <button onclick="checkKey()" class="w-full border border-[#00ff41] py-2 text-[10px] font-bold">VERIFY_KEY</button>
         </div>
     </div>
 
@@ -43,17 +36,17 @@
         <div class="max-w-4xl mx-auto flex justify-between items-center mb-10">
             <div>
                 <h1 class="text-lg font-bold neon-text">ANOMALY_STORAGE</h1>
-                <p id="userStatus" class="text-[8px] opacity-60">GUEST_MODE</p>
+                <p id="userStatus" class="text-[8px] opacity-60 italic">SECURE_STORAGE</p>
             </div>
-            <button id="authBtn" class="glass px-3 py-1 rounded border border-[#00ff41] text-[10px]">LOGIN</button>
+            <button id="authBtn" class="glass px-3 py-1 rounded border border-[#00ff41] text-[10px]">LOGIN_ADMIN</button>
         </div>
 
         <div id="uploadArea" class="max-w-4xl mx-auto mb-8 hidden">
-            <label class="glass block w-full p-6 rounded-xl border-dashed border-2 border-[#00ff41] text-center cursor-pointer hover:bg-[#00ff41]/10">
-                <span class="text-xs font-bold text-white">+ UPLOAD_ANOMALY_FILE</span>
+            <label class="glass block w-full p-6 rounded-xl border-dashed border-2 border-[#00ff41] text-center cursor-pointer">
+                <span class="text-xs font-bold">+ ADD_ANOMALY_DATA</span>
                 <input type="file" id="fileInput" class="hidden" accept="image/*,video/*">
             </label>
-            <p id="uploadStatus" class="text-[10px] mt-2 text-center text-white"></p>
+            <p id="uploadStatus" class="text-[10px] mt-2 text-center text-[#00ff41]"></p>
         </div>
 
         <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-3" id="galleryGrid"></div>
@@ -65,86 +58,84 @@
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         const ADMIN_EMAIL = "ridwan9jkbb@gmail.com";
-        const GUEST_KEY = "ANOMALY2026"; // Kasih tahu ini ke temanmu
+        const ACCESS_KEY = "ANOMALY2026";
 
-        // Animasi Loading
+        // Animasi Masuk
         window.onload = () => {
-            setTimeout(() => document.getElementById('L2').classList.remove('hidden'), 400);
-            setTimeout(() => document.getElementById('L3').classList.remove('hidden'), 800);
-            setTimeout(() => document.getElementById('L4').classList.remove('hidden'), 1200);
+            setTimeout(() => document.getElementById('L2').classList.remove('hidden'), 500);
             setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loader').remove();
-                    document.getElementById('gatekeeper').classList.remove('hidden');
-                }, 800);
-            }, 2000);
+                document.getElementById('loader').remove();
+                document.getElementById('gatekeeper').classList.remove('hidden');
+            }, 1200);
         };
 
-        // Cek Password Teman
+        // Verifikasi Password Teman
         function checkKey() {
-            const val = document.getElementById('passkey').value;
-            if(val === GUEST_KEY) {
+            if(document.getElementById('passkey').value === ACCESS_KEY) {
                 document.getElementById('gatekeeper').remove();
                 document.getElementById('mainContent').classList.remove('hidden');
                 loadGallery();
-                checkAdmin();
-            } else {
-                document.getElementById('errorMsg').classList.remove('hidden');
-            }
+                checkUserStatus();
+            } else { alert("WRONG ACCESS KEY!"); }
         }
 
-        // Cek Apakah yang login adalah Ridwan
-        async function checkAdmin() {
+        // Cek Login Status
+        async function checkUserStatus() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const authBtn = document.getElementById('authBtn');
             const uploadArea = document.getElementById('uploadArea');
-            const userStatus = document.getElementById('userStatus');
 
-            if (user) {
+            if (user && user.email === ADMIN_EMAIL) {
+                document.getElementById('userStatus').innerText = "ADMIN_ID: " + user.email;
+                uploadArea.classList.remove('hidden');
                 authBtn.innerText = "LOGOUT";
                 authBtn.onclick = () => supabaseClient.auth.signOut().then(() => location.reload());
-                
-                if (user.email === ADMIN_EMAIL) {
-                    userStatus.innerText = "ADMIN_ID: " + user.email;
-                    uploadArea.classList.remove('hidden');
-                } else {
-                    userStatus.innerText = "VISITOR_ID: " + user.email;
-                }
             } else {
-                authBtn.onclick = () => supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+                authBtn.onclick = async () => {
+                    const email = prompt("Masukkan Email Admin:");
+                    const password = prompt("Masukkan Password Admin:");
+                    if(!email || !password) return;
+                    
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) alert("LOGIN GAGAL: " + error.message);
+                    else location.reload();
+                };
             }
         }
 
-        // Ambil Media dari Supabase Storage
+        // Muat Galeri
         async function loadGallery() {
-            const { data, error } = await supabaseClient.storage.from('anomaly').list();
+            const { data } = await supabaseClient.storage.from('anomaly').list();
             const grid = document.getElementById('galleryGrid');
             if (data) {
                 data.forEach(file => {
                     if(file.name === '.emptyFolderPlaceholder') return;
                     const url = `${SB_URL}/storage/v1/object/public/anomaly/${file.name}`;
                     const div = document.createElement('div');
-                    div.className = "glass rounded-lg overflow-hidden aspect-square flex items-center justify-center";
+                    div.className = "glass rounded-lg aspect-square overflow-hidden";
                     
                     if (file.name.match(/\.(mp4|webm|mov)$/i)) {
                         div.innerHTML = `<video src="${url}" class="w-full h-full object-cover" controls></video>`;
                     } else {
-                        div.innerHTML = `<img src="${url}" class="w-full h-full object-cover" loading="lazy">`;
+                        div.innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
                     }
                     grid.appendChild(div);
                 });
             }
         }
 
-        // Fungsi Upload Ridwan
+        // Fungsi Upload
         document.getElementById('fileInput').onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            document.getElementById('uploadStatus').innerText = "UPDATING_DATABASE...";
+            const status = document.getElementById('uploadStatus');
+            status.innerText = "UPLOADING_DATA...";
+            
             const name = `${Date.now()}_${file.name}`;
             const { error } = await supabaseClient.storage.from('anomaly').upload(name, file);
-            if(error) alert(error.message); else location.reload();
+            
+            if(error) alert(error.message); 
+            else { status.innerText = "UPLOAD_DONE!"; location.reload(); }
         };
     </script>
 </body>
