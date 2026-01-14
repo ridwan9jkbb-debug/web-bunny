@@ -1,69 +1,113 @@
-            <!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bunny Cloud - Tanpa Batas</title>
+    <title>TERMINAL_VOID</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1e293b; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 90%; max-width: 400px; text-align: center; border: 1px solid #334155; }
-        h2 { margin-bottom: 1.5rem; color: #38bdf8; }
-        input[type="file"] { margin-bottom: 1rem; width: 100%; color: #94a3b8; }
-        button { background: #38bdf8; color: #0f172a; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
-        button:active { transform: scale(0.95); }
-        #result { margin-top: 1rem; word-break: break-all; font-size: 0.8rem; background: #0f172a; padding: 0.5rem; border-radius: 0.3rem; display: none; border: 1px dashed #38bdf8; }
+        * { box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff41; 
+            font-family: 'Courier New', Courier, monospace; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+        }
+        #terminal-header { 
+            background: #0a0a0a; 
+            padding: 10px; 
+            border-bottom: 2px solid #00ff41; 
+            font-size: 0.8rem;
+            text-shadow: 0 0 5px #00ff41;
+        }
+        #chat-window { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+            background: linear-gradient(rgba(0, 255, 65, 0.05) 50%, transparent 50%), #000;
+            background-size: 100% 4px;
+        }
+        .entry { margin-bottom: 12px; line-height: 1.4; border-left: 2px solid #00ff41; padding-left: 10px; }
+        .user { color: #fff; font-weight: bold; text-transform: uppercase; }
+        .msg { color: #00ff41; }
+        #input-panel { 
+            background: #0a0a0a; 
+            padding: 15px; 
+            border-top: 2px solid #00ff41;
+            display: flex;
+            gap: 10px;
+        }
+        input { 
+            background: #000; 
+            border: 1px solid #00ff41; 
+            color: #00ff41; 
+            padding: 10px; 
+            outline: none;
+            font-family: 'Courier New', monospace;
+        }
+        button { 
+            background: #00ff41; 
+            color: #000; 
+            border: none; 
+            padding: 10px 15px; 
+            font-weight: bold; 
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+        button:hover { background: #fff; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #00ff41; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Bunny Cloud 🚀</h2>
-    <input type="file" id="fileInput">
-    <button onclick="uploadKeSupabase()" id="btnUpload">GAS UPLOAD!</button>
-    <div id="result"></div>
+<div id="terminal-header">
+    [SYSTEM]: ANONYMOUS_VOID_v1.0.4<br>
+    [STATUS]: ENCRYPTED_CONNECTION_ESTABLISHED...
+</div>
+
+<div id="chat-window"></div>
+
+<div id="input-panel">
+    <input type="text" id="user" placeholder="USER_ID" style="width: 30%;">
+    <input type="text" id="text" placeholder="ENTER_COMMAND_OR_MSG..." style="width: 70%;">
+    <button onclick="send()">EXECUTE</button>
 </div>
 
 <script>
-    // GANTI DENGAN DATA KAMU
-    const SB_URL = "URL_SUPABASE_KAMU";
-    const SB_KEY = "ANON_KEY_SUPABASE_KAMU";
-    const BUCKET_NAME = "NAMA_BUCKET_KAMU";
+    const supabase = supabase.createClient("URL_SUPABASE_KAMU", "ANON_KEY_KAMU");
 
-    const supabase = supabase.createClient(SB_URL, SB_KEY);
-
-    async function uploadKeSupabase() {
-        const fileInput = document.getElementById('fileInput');
-        const btn = document.getElementById('btnUpload');
-        const resDiv = document.getElementById('result');
-        const file = fileInput.files[0];
-
-        if (!file) return alert("Pilih file dulu, Bunny!");
-
-        btn.innerText = "Lagi Terbang...";
-        btn.disabled = true;
-
-        const fileName = `${Date.now()}-${file.name}`;
-
-        const { data, error } = await supabase.storage
-            .from(BUCKET_NAME)
-            .upload(fileName, file);
-
-        if (error) {
-            alert("Gagal Pamer: " + error.message);
-            btn.innerText = "GAS UPLOAD!";
-            btn.disabled = false;
-        } else {
-            const { data: urlData } = supabase.createClient(SB_URL, SB_KEY)
-                .storage.from(BUCKET_NAME).getPublicUrl(fileName);
-            
-            resDiv.style.display = "block";
-            resDiv.innerHTML = `<strong>Link Pamer:</strong><br><a href="${urlData.publicUrl}" target="_blank" style="color:#38bdf8">${urlData.publicUrl}</a>`;
-            btn.innerText = "BERHASIL!";
-            setTimeout(() => { btn.innerText = "GAS UPLOAD!"; btn.disabled = false; }, 3000);
-        }
+    async function fetchMsgs() {
+        const { data } = await supabase.from('grup_bunny').select('*').order('created_at', { ascending: true });
+        const win = document.getElementById('chat-window');
+        win.innerHTML = '';
+        data.forEach(d => {
+            win.innerHTML += `<div class="entry"><span class="user">@${d.nama}:</span> <span class="msg">${d.pesan}</span></div>`;
+        });
+        win.scrollTop = win.scrollHeight;
     }
-</script>
 
+    async function send() {
+        const nama = document.getElementById('user').value || "ANON_GHOST";
+        const pesan = document.getElementById('text').value;
+        if(!pesan) return;
+
+        await supabase.from('grup_bunny').insert([{ nama, pesan }]);
+        document.getElementById('text').value = '';
+    }
+
+    // REALTIME LISTEN
+    supabase.channel('room1')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'grup_bunny' }, () => {
+        fetchMsgs();
+    })
+    .subscribe();
+
+    fetchMsgs();
+</script>
 </body>
-</html>
+</html>            
