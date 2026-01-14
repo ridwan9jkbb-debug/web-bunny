@@ -1,59 +1,147 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Aplikasi Bunny</title>
-
-<style>
-body {
-  background: #0f172a;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.card {
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
-  color: white;
-  width: 300px;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #38bdf8;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0ea5e9;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil [Ridwan] - reng brembeng</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1, h2 {
+      color: #ffeb3b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      animation: fadeIn 2s ease-in;
+    }
+    p {
+      font-size: 1.2em;
+      animation: slideIn 1.5s ease-out;
+    }
+    img {
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      max-width: 100%;
+      height: auto;
+    }
+    .stats, .projects, .streak {
+      margin: 20px 0;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tech-stack img {
+      transition: transform 0.3s;
+    }
+    .tech-stack img:hover {
+      transform: scale(1.1);
+    }
+    .connect {
+      margin: 20px 0;
+    }
+    .connect a {
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .connect img:hover {
+      transform: scale(1.05);
+      transition: 0.3s;
+    }
+    .fun-fact {
+      font-style: italic;
+      margin: 20px 0;
+    }
+    .gif {
+      width: 50%;
+      margin: 20px 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      .gif {
+        width: 80%;
+      }
+      .tech-stack {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <img src="https://media.giphy.com/media/SWoSkN6DxTszqIKEqv/giphy.gif" alt="Welcome GIF" class="gif"/>
+    
+    <h1>🚀 Halo, Ridwan! 🚀</h1>
+    <p><em>"Koding adalah seni, dan aku seniman digital!"</em></p>
+    
+    <div class="stats">
+      <img src="https://github-readme-stats.vercel.app/api?username=[username-githubmu]&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats"/>
+    </div>
+    
+    <h2>💻 Tech Stack Saya</h2>
+    <div class="tech-stack">
+      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
+      <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/>
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+      <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
+      <!-- Tambah badge lain sesuai skillmu -->
+    </div>
+    
+    <h2>🔥 Percobaan reah perak </h2>
+    <div class="projects">
+      <a href="https://github.com/[username]/repo1"><img src="https://github-readme-stats.vercel.app/api/pin/?username=[username]&repo=repo1&theme=radical" alt="Repo1"/></a>
+      <a href="https://github.com/[username]/repo2"><img src="https://github-readme-stats.vercel.app/api/pin/?username=[username]&repo=repo2&theme=radical" alt="Repo2"/></a>
+    </div>
+    
+    <h2>📈 Aktivitas GitHub</h2>
+    <div class="streak">
+      <img src="https://github-readme-streak-stats.herokuapp.com/?user=[username-githubmu]&theme=radical" alt="GitHub Streak"/>
+    </div>
+    
+    <h2>🌐 Connect with Me</h2>
+    <div class="connect">
+      <a href="https://linkedin.com/in/[linkedinmu]"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
+      <a href="https://twitter.com/[twittermu]"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"/></a>
+      <a href="mailto:[emailmu]"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
+    </div>
+    
+    <h2>🎉 Fun Fact</h2>
+    <p class="fun-fact">Aku bisa nge-debug kode sambil dengerin lagu EDM! 🎶</p>
+    
+    <img src="https://media.giphy.com/media/3o7TKz9bX9v9Kz9z9z/giphy.gif" alt="Coding GIF" class="gif"/>
+    
+    <p><strong>⭐ Jangan lupa star repo ini kalau suka! ⭐</strong></p>
+  </div>
 
-<div class="card">
-  <h1 id="judul">Halo Bunny 🐰</h1>
-  <p id="text">Tekan tombol di bawah</p>
-  <button onclick="aksi()">Klik aku</button>
-</div>
-
-<script>
-function aksi() {
-  document.getElementById("judul").innerText = "Kena prank 😈";
-  document.getElementById("text").innerText = "Aku tau kamu bakal klik 😏";
-}
-</script>
-
+  <script>
+    // Tambah interaktivitas sederhana: klik pada h1 untuk alert
+    document.querySelector('h1').addEventListener('click', function() {
+      alert('Halo! Terima kasih sudah berkunjung!');
+    });
+  </script>
 </body>
 </html>
