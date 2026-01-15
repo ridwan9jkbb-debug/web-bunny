@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MyApp - Bunny</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="#">MyApp</a>
+            </div>
+            
+            <!-- Menu Navigasi -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="quest.html">Quest</a></a></li>
+                <li><a href="Layanan.html">layanan</a></a></li>
+                <li><a href="Kontak.html">Kontak</a></a></li>
+            </ul>
+            
+            <!-- Foto Profil dengan Dropdown -->
+            <div class="profile">
+                <img src="wan.png" alt="Foto Profil" class="profile-img" id="profileImg">
+                <div class="dropdown" id="dropdownMenu">
+                    <a href="#">Profil Saya</a>
+                    <a href="#">Pengaturan</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+<main class="container-beranda">
+    <section class="welcome-card">
+        <h1>Welcome, Soldier!</h1>
+        <p>Siap untuk menyelesaikan misi dan membangun project hari ini?</p>
+    </section>
+
+    <div class="fitur-grid">
+        <div class="kartu" style="border-left-color: #00d2ff; text-align: center;">
+            <h3>📊 Player Stats</h3>
+            <p>Level: 01 (Newbie Developer)</p>
+            <p>Current EXP: 150 / 1000</p>
+            <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 10px; margin-top: 10px; overflow: hidden;">
+                <div style="background: #00d2ff; width: 15%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="kartu" style="border-left-color: #f1c40f;">
+            <h3>🛡️ Active Quest</h3>
+            <p>Kamu punya 3 misi yang belum diselesaikan hari ini. Ayo cek di halaman Quest!</p>
+            <button class="btn-quest" onclick="window.location.href='quest.html'">Cek Misi</button>
+        </div>
+
+        <div class="kartu" style="border-left-color: #9b59b6;">
+            <h3>🚀 Latest Arsenal</h3>
+            <p>Tools terbaru: <b>React</b> & <b>Vercel</b>. Cek semua perlengkapan coding kamu di sini.</p>
+            <button class="btn-quest" style="background: #9b59b6;" onclick="window.location.href='layanan.html'">Lihat Arsenal</button>
+        </div>
+    </div>
+</main>
+    <script src="script.js"></script>
+</body>
+</html>
