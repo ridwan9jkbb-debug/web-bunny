@@ -1,0 +1,181 @@
+/* =========================================
+   1. IMPORT FONT & RESET
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+    min-height: 100vh;
+    color: white;
+    /* Animasi masuk agar tidak patah saat pindah page */
+    animation: fadeIn 0.5s ease-in-out;
+}
+/* NAVBAR STABIL & SEJAJAR */
+.navbar {
+    background: rgba(15, 12, 41, 0.95);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 70px; /* Kunci tinggi navbar agar tidak goyang */
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.3);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo a {
+    color: #00d2ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.2rem;
+    flex-shrink: 0; /* Logo tidak boleh mengecil */
+}
+
+/* Menu Navigasi - Dibuat pas ditengah */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    margin: 0 10px;
+}
+
+.nav-menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap; /* Teks tidak boleh turun ke bawah */
+}
+
+/* Foto Profil dengan Efek Glow */
+.profile-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #00d2ff;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.5); /* Efek Glow */
+    transition: 0.3s;
+}
+
+.profile-img:hover {
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+    transform: scale(1.1);
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: white;
+    border-radius: 12px;
+    width: 180px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.dropdown a {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.dropdown a:hover { background: #f0f0f0; border-radius: 12px; }
+
+/* =========================================
+   4. CONTENT & QUEST CARDS
+   ========================================= */
+.container-beranda {
+    padding: 120px 20px 60px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.welcome-card {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.welcome-card h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 5px 15px rgba(0,210,255,0.3));
+}
+
+.fitur-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.kartu {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.kartu:hover {
+    transform: translateY(-12px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #00d2ff;
+}
+
+.kartu h3 {
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #00d2ff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.kartu p {
+    font-size: 0.95rem;
+    color: #bdc3c7;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.btn-quest {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-quest:hover {
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+    letter-spacing: 1px;
+}
